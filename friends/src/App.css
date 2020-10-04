@@ -3,10 +3,17 @@
 }
 
 .submit {
+  margin: 0 auto;
   margin-top: 1rem;
-  margin-left: 1rem;
 }
 
 .error {
   margin-left: 3.5rem;
 }
+
+.input{
+  margin: 0 auto;
+  margin-top: 1rem;
+  max-width: 15%;
+}
+

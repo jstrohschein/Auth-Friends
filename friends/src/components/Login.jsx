@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { axiosWithAuth } from '../api/axiosWithAuth';
 import { useForm } from 'react-hook-form'
-import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import { Button, Form, FormGroup, Label } from 'reactstrap';
 
 const Login = props => {
 
@@ -11,13 +11,14 @@ const Login = props => {
   })
 
 
+
   const { register, handleSubmit, watch, errors } = useForm();
 
 
   // console.log('username: ', watch("username"))
   // console.log('Password: ', watch("password"))
 
-  const login = credentials => {
+  const submitLogin = credentials => {
 
     console.log('creds: ', credentials)
 
@@ -38,35 +39,48 @@ const Login = props => {
           console.error('login error: ', error)
         }
       })
+
+    setFormState({
+      username: '',
+      password: ''
+    })
+
   }
 
   return (
+    <div>
+      <h2>User Login</h2>
+      <Form onSubmit={handleSubmit(submitLogin)}>
+        <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
+          <Label htmlFor='username' className='mr-sm-2'></Label>
+          <input
+            className='input'
+            type='text'
+            name='username'
+            id='username'
+            placeholder='Username'
+            ref={register({ required: true })}
+          />
+          {errors.username && <p className='error'>Username is required</p>}
+        </FormGroup>
 
-    <Form onSubmit={handleSubmit(login)}>
-      <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
-        <Label htmlFor='username' className='mr-sm-2'>Username</Label>
-        <input
-          type='text'
-          name='username'
-          id='username'
-          ref={register({ required: true })}
-        />
-        {errors.username && <p className='error'>Username is required</p>}
-      </FormGroup>
+        <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
+          <Label htmlFor='password' className='mb-2 mr-sm-2 mb-sm-0'></Label>
+          <input
+            className='input'
+            type='password'
+            name='password'
+            id='password'
+            placeholder='Password'
+            ref={register({ required: true })}
+          />
+          {errors.password && <p className='error'>password is required</p>}
+        </FormGroup>
 
-      <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
-        <Label htmlFor='password' className='mb-2 mr-sm-2 mb-sm-0'>Password</Label>
-        <input
-          type='password'
-          name='password'
-          id='password'
-          ref={register({ required: true })}
-        />
-        {errors.password && <p className='error'>password is required</p>}
-      </FormGroup>
+        <Button type='submit' className='submit'>Submit</Button>
+      </Form>
 
-      <Button type='submit' className='submit'>Submit</Button>
-    </Form>
+    </div>
 
 
   )
