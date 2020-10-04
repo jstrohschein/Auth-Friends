@@ -1,6 +1,7 @@
+import { response } from 'express';
 import React, { useState } from 'react'
-import { useForm } from 'react-hook-form'
 import { Button, Form, FormGroup, Label } from 'reactstrap';
+import { axiosWithAuth } from '../api/axiosWithAuth';
 
 
 const NewFriend = () => {
@@ -8,20 +9,46 @@ const NewFriend = () => {
   const [formState, setFormState] = useState({
     name: '',
     email: '',
-    age: null,
-    id: null
+    age: '',
   })
 
-  const { register, handleSubmit, watch, errors } = useForm();
+  const [newFriend, setNewFriend] = useState({})
 
-  const submitNewFriend = friend => {
-    console.log('New Friend: ', friend)
+  const handleChanges = e => {
+
+    const newFormData = {
+      ...formState,
+      [e.target.name]: e.target.name === 'age' ? Number(e.target.value) : e.target.value
+    }
+
+    setFormState(newFormData)
+    setNewFriend(newFormData)
+
+  }
+
+  const submitFriend = e => {
+
+    e.preventDefault()
+
+    axiosWithAuth()
+      .post('/api/friends', newFriend)
+      .then(response => {
+        console.log('Post NewFriend Response: ', response)
+      })
+      .catch(error => console.log('Post NewFriend Error: ', error))
+
+    setFormState({
+      name: '',
+      age: '',
+      height: ''
+    })
+
   }
 
   return (
     <div>
       <h2>New Friend</h2>
-      <Form onSubmit={handleSubmit(submitNewFriend)}>
+      <Form onSubmit={submitFriend}>
 
         <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
           <Label htmlFor='name' className='mr-sm-2'></Label>
@@ -31,9 +58,9 @@ const NewFriend = () => {
             name='name'
             id='name'
             placeholder='Name'
-            ref={register({ required: true })}
+            value={formState.name}
+            onChange={handleChanges}
           />
-          {errors.name && <p className='error'>Name is required</p>}
         </FormGroup>
 
         <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
@@ -44,22 +71,22 @@ const NewFriend = () => {
             name='email'
             id='email'
             placeholder='Email'
-            ref={register({ required: true })}
+            value={formState.email}
+            onChange={handleChanges}
           />
-          {errors.email && <p className='error'>Email is required</p>}
         </FormGroup>
 
         <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
           <Label htmlFor='age' className='mr-sm-2'></Label>
           <input
             className='input'
-            type='text'
+            type='number'
             name='age'
             id='age'
             placeholder='Age'
-            ref={register({ required: true })}
+            value={formState.age}
+            onChange={handleChanges}
           />
-          {errors.age && <p className='error'>Age is required</p>}
         </FormGroup>
 
         <Button type='submit' className='submit'>Submit</Button>

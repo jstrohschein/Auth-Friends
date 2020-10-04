@@ -25,6 +25,8 @@ const Friends = props => {
       .catch(error => console.log('Friends.js: axiosWithAuth Error: ', error))
   }
 
+  useEffect(() => getFriends(), [])
+
   return (
     <div></div>
   )

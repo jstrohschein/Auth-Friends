@@ -10,25 +10,28 @@ const Login = props => {
     password: ''
   })
 
-
-
   const { register, handleSubmit, watch, errors } = useForm();
 
 
   // console.log('username: ', watch("username"))
   // console.log('Password: ', watch("password"))
 
-  const submitLogin = credentials => {
+  const submitLogin = data => {
 
-    console.log('creds: ', credentials)
+
+    console.log('Creds: ', data)
 
     axiosWithAuth()
-      .post('/login', credentials)
+      .post('/login', { data })
 
       .then(response => {
         console.log('login with auth response: ', response)
         localStorage.setItem('token', response.data.payload)
         props.history.push('/protected')
+        setFormState({
+          username: '',
+          password: ''
+        })
       })
 
       .catch(error => {
@@ -40,10 +43,7 @@ const Login = props => {
         }
       })
 
-    setFormState({
-      username: '',
-      password: ''
-    })
+
 
   }
 

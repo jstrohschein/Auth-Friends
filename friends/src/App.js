@@ -7,6 +7,7 @@ import PrivateRoute from './components/PrivateRoute'
 //components
 import Login from './components/Login'
 import NewFriend from './components/NewFriend'
+import Friends from './components/Friends'
 
 const App = () => {
 
@@ -26,7 +27,7 @@ const App = () => {
       </Nav>
 
       <Switch>
-        {/*<PrivateRoute exact path='/friends' component={Friends} />*/}
+        <PrivateRoute exact path='/friends' component={Friends} />
         <Route path='/newfriend' component={NewFriend} />
         <Route path='/login' component={Login} />
         <Route component={Login} />
