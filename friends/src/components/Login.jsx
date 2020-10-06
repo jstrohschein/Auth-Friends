@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { axiosWithAuth } from '../api/axiosWithAuth';
 import { useForm } from 'react-hook-form'
 import { Button, Form, FormGroup, Label } from 'reactstrap';
+import { useHistory } from 'react-router-dom'
 
 const Login = props => {
 
@@ -9,6 +10,8 @@ const Login = props => {
     username: '',
     password: ''
   })
+
+  const { push } = useHistory();
 
   const { register, handleSubmit, watch, errors } = useForm();
 
@@ -22,16 +25,12 @@ const Login = props => {
     console.log('Creds: ', data)
 
     axiosWithAuth()
-      .post('/login', { data })
+      .post('/login', data )
 
       .then(response => {
         console.log('login with auth response: ', response)
         localStorage.setItem('token', response.data.payload)
-        props.history.push('/protected')
-        setFormState({
-          username: '',
-          password: ''
-        })
+        push('/protected')
       })
 
       .catch(error => {
