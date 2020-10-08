@@ -25,7 +25,7 @@ const Login = props => {
     console.log('Creds: ', data)
 
     axiosWithAuth()
-      .post('/login', data )
+      .post('/api/login', data )
 
       .then(response => {
         console.log('login with auth response: ', response)
